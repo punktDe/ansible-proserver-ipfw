@@ -1,0 +1,21 @@
+---
+- name: Template IPFW rules
+  template:
+    src: ipfw/ipfw.rules.j2
+    dest: "{{ item }}"
+  with_items:
+    - /etc/ipfw.rules
+  notify: Restart IPFW
+
+- name: Configure IPFW service
+  lineinfile:
+    path: "{{ rc_conf }}"
+    regexp: "^{{ item.key|regex_escape }}="
+    line: '{{ item.key }}="{{ item.value }}"'
+  loop_control:
+    label: '{{ rc_conf }} {{ item.key }}="{{ item.value }}"'
+  with_dict:
+    firewall_type: /etc/ipfw.rules
+  vars:
+    rc_conf: /etc/rc.conf
+  notify: Restart IPFW

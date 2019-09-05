@@ -1,0 +1,5 @@
+---
+- name: Restart IPFW
+  service:
+    name: ipfw
+    state: restarted

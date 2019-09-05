@@ -1,0 +1,3 @@
+{% for rule in ipfw.rules.values() %}{% if rule %}
+{{ rule }}
+{% endif %}{% endfor %}
