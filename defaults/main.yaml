@@ -1,3 +1,8 @@
 ---
 ipfw:
-  rules: {}
+  rules:
+    v4proxy: |
+      {%- if ansible_local.proserver.routing.gate64_ip_address -%}
+      add 2000 fwd ::1,57 tcp from {{ ansible_local.proserver.routing.gate64_ip_address }} to me6 443 in
+      add 2100 fwd ::1,87 tcp from {{ ansible_local.proserver.routing.gate64_ip_address }} to me6 80 in
+      {%- endif -%}
